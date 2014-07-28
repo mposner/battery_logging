@@ -6,9 +6,15 @@ Windows Battery Status Logging
 
 import subprocess
 
-result = subprocess.check_output(["wmic", "path", "Win32_Battery", "get", "/value"])
+battery_vars = ['BatteryStatus', 'EstimatedChargeRemaining', 'EstimatedRunTime',
+				'Status', 'TimeOnBattery','TimeToFullCharge']
 
-result = result.strip()
-
+result = ""
+				
+for var in battery_vars:			
+	temp = subprocess.check_output(["wmic", "path", "Win32_Battery", "get", var, 
+									   "/value"])	
+	result += ' ' + temp.strip()
+	
 print "====== Result: "
 print result

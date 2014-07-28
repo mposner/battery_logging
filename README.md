@@ -1,5 +1,5 @@
 Windows Battery Logging
 =======================
 
-This script is designed to be run periodically and will gather and append
-current battery data to a file.
+This script is designed to be run periodically and will gather 
+current battery data and append it to a file.
