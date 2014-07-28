@@ -9,4 +9,6 @@ be found at:  http://msdn.microsoft.com/en-us/library/aa394074(v=vs.85).aspx
 
 -----------------------
 
+See also Tim Golden's [WMI Python package](https://pypi.python.org/pypi/WMI/) 
+
 Inspired by http://www.ifweassume.com/2013/08/the-de-evolution-of-my-laptop-battery.html
