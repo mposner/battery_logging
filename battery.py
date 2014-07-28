@@ -19,7 +19,7 @@ elif len(sys.argv) == 1:
 
 # WMIC Win32_Battery fields to query
 battery_vars = ['BatteryStatus', 'EstimatedChargeRemaining', 'EstimatedRunTime',
-				'Status', 'TimeOnBattery','TimeToFullCharge']
+				'Status']
 
 # Start data with timestamp
 result = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
