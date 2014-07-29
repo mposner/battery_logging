@@ -2,8 +2,8 @@ Windows Battery Logging
 =======================
 
 This script is designed to be run periodically and will gather 
-current data on your laptop battery and append it to a file.  
-If scheduled to run every few minutes for an extended period of 
+current data on your laptop battery and append it to a file.  If 
+scheduled to run every few minutes for an extended period of 
 time, it will build up data about your laptop battery and charge
 cycles for later analysis.
 
