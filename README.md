@@ -8,6 +8,7 @@ current data on your laptop battery and append it to a file.
 ```
 python batery.py [logfile]
 ```
+If no logfile is supplied, current battery info is printed to stdout.
 
 ##Task Scheduling
 
