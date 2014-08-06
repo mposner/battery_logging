@@ -8,6 +8,61 @@ import sys
 import subprocess
 from datetime import datetime
 
+
+
+def usage():
+	print "Usage: \n\n" + \
+		  "python battery.py [logfile]\n\n" + \
+		  "Arguments: \n" + \
+		  "    [logfile]    The output file where the data should be appended.\n" + \
+		  "                   If no output file is specified, data is printed to stdout."
+
+
+
+def getProcessInfo():
+	"""Gets info on the top running processes"""
+	
+	#execute wmic command and capture output
+	temp = subprocess.check_output(["wmic", "path", "Win32_PerfFormattedData_PerfProc_Process", "get", 
+		"ElapsedTime,Name,PercentProcessorTime"])	
+	
+	#iterate over process and split into lists
+	firstline = True
+	result = []  #list of lists to contain the final result
+		
+	for line in temp.splitlines():
+		if(firstline):
+			firstline = False
+			continue
+		elif not line:  #skip empty lines
+			continue
+		
+		proclist = line.split()  #split on whitespace to return a 3 element list
+		
+		if (proclist[1] != "_Total"):  #dont append empty lists or the "_Total" process
+			result.append(proclist)
+		
+	# narrow process down to top 10%
+	times = [int(x[2]) for x in result]
+	times.sort()
+	times.reverse()
+	
+	print "TIMES:", times
+	
+	print "10%:", len(times)/10
+	
+	times = times[:(len(times)/10)]
+	cutoff = max(times[-1],1)
+	
+	print "CUTOFF:", cutoff
+	
+	return [x for x in result if int(x[2]) >= cutoff]
+
+
+	
+# ======  MAIN  ======
+
+
 # Check and parse input arguments
 if len(sys.argv) > 2:
 	usage()
@@ -36,6 +91,7 @@ result = '[' + result + ']\n'
 
 if logfile == "":
 	print result
+	print getProcessInfo()
 else:
 	with open(logfile, 'a') as f:
 		f.write(result)
@@ -43,9 +99,3 @@ else:
 exit(0)
 
 
-def usage():
-	print "Usage: \n\n" + \
-		  "python battery.py [logfile]\n\n" + \
-		  "Arguments: \n" + \
-		  "    [logfile]    The output file where the data should be appended.\n" + \
-		  "                   If no output file is specified, data is printed to stdout."
