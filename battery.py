@@ -23,8 +23,8 @@ def getProcessInfo():
 	"""Gets info on the top running processes"""
 	
 	#execute wmic command and capture output
-	temp = subprocess.check_output(["wmic", "path", "Win32_PerfFormattedData_PerfProc_Process", "get", 
-		"ElapsedTime,Name,PercentProcessorTime"])	
+	temp = subprocess.check_output(["wmic", "path", "Win32_PerfRawData_PerfProc_Process", "get", 
+		"Name,PercentProcessorTime"])	
 	
 	#iterate over process and split into lists
 	firstline = True
@@ -37,13 +37,13 @@ def getProcessInfo():
 		elif not line:  #skip empty lines
 			continue
 		
-		proclist = line.split()  #split on whitespace to return a 3 element list
+		proclist = line.split()  #split on whitespace to return a 2 element list
 		
-		if (proclist[1] != "_Total"):  #dont append empty lists or the "_Total" process
-			result.append(proclist)
+		if (proclist[0] != "_Total"):  #dont append empty lists or the "_Total" process
+			result.append([proclist[0], int(proclist[1])/(10**7)])  #convert times to ints, percent processor time is in 100 nanosecond intervals
 		
 	# narrow process list down
-	times = [int(x[2]) for x in result]
+	times = [x[1] for x in result]
 	times.sort()
 	times.reverse()
 	
@@ -59,7 +59,7 @@ def getProcessInfo():
 	
 	print "CUTOFF:", cutoff
 	
-	return [x for x in result if int(x[2]) >= cutoff]
+	return [x for x in result if x[1] >= cutoff]
 
 
 	
