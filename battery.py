@@ -42,7 +42,7 @@ def getProcessInfo():
 		if (proclist[1] != "_Total"):  #dont append empty lists or the "_Total" process
 			result.append(proclist)
 		
-	# narrow process down to top 10%
+	# narrow process list down
 	times = [int(x[2]) for x in result]
 	times.sort()
 	times.reverse()
@@ -51,7 +51,10 @@ def getProcessInfo():
 	
 	print "10%:", len(times)/10
 	
-	times = times[:(len(times)/10)]
+	nonzero = [x for x in times if x]
+	
+	ind = min(len(times)/10,len(nonzero))  #reduce processes to top 10% or to all with nonzero cpu time
+	times = times[:ind]
 	cutoff = max(times[-1],1)
 	
 	print "CUTOFF:", cutoff
