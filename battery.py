@@ -5,6 +5,7 @@ Windows Battery Status Logging
 """
 
 import sys
+import math
 import subprocess
 from datetime import datetime
 
@@ -26,7 +27,7 @@ def getProcessInfo():
 	temp = subprocess.check_output(["wmic", "path", "Win32_PerfRawData_PerfProc_Process", "get", 
 		"Name,PercentProcessorTime"])	
 	
-	#iterate over process and split into lists
+	#iterate over processes and split into lists
 	firstline = True
 	result = []  #list of lists to contain the final result
 		
@@ -42,22 +43,18 @@ def getProcessInfo():
 		if (proclist[0] != "_Total"):  #dont append empty lists or the "_Total" process
 			result.append([proclist[0], int(proclist[1])/(10**7)])  #convert times to ints, percent processor time is in 100 nanosecond intervals
 		
+		
+	#sort list on processor time, highest first
+	result.sort(key=lambda x: x[1])
+	result.reverse()
+	
 	# narrow process list down
 	times = [x[1] for x in result]
-	times.sort()
-	times.reverse()
-	
-	print "TIMES:", times
-	
-	print "10%:", len(times)/10
-	
+	print times
 	nonzero = [x for x in times if x]
 	
-	ind = min(len(times)/10,len(nonzero))  #reduce processes to top 10% or to all with nonzero cpu time
-	times = times[:ind]
-	cutoff = max(times[-1],1)
-	
-	print "CUTOFF:", cutoff
+	ind = min(int(math.ceil(len(times)/20)),len(nonzero))  #reduce processes to top 10% (atleast 1) or to all with nonzero cpu time
+	cutoff = max(times[ind],1)
 	
 	return [x for x in result if x[1] >= cutoff]
 
