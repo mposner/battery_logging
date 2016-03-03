@@ -12,9 +12,10 @@ DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 def usage():
     print "Usage: \n\n" + \
-          "python analysis.py [logfile]\n\n" + \
+          "python analysis.py [logfile] [outfile]\n\n" + \
           "Arguments: \n" + \
-          "    [logfile]    Input file with data written by battery.py\n"
+          "    [logfile]    Input file with data written by battery.py\n" + \
+          "    [outfile]    Output image file name\n"
 
 
 def parseLog(logfile):
@@ -69,8 +70,9 @@ def parseLog(logfile):
 
 
 # Check and parse input arguments
-if len(sys.argv) == 2:
+if len(sys.argv) == 3:
     logfile = sys.argv[1]
+    outfile = sys.argv[2]
 else:   
     usage()
     exit(1)
@@ -78,13 +80,21 @@ else:
 # Parse log data
 result = parseLog(logfile)
 
+colors = []
+for charge in result['charges']:
+    charge = int(charge)
+    
+    colors.append((1-charge/100.0, charge/100.0, 0.3))
+
+
 # Convert date data into usable numbers
 floatdates = [datetime.strptime(x, DATE_FORMAT) for x in result['dates']]
 
 # Graph data
 pyplot.figure(1)
 
-pyplot.plot_date(floatdates, result['charges'], 'o-')
+for i in range(len(floatdates)):
+    pyplot.plot_date(floatdates[i], result['charges'][i], 'o', color=colors[i], markersize=4, markeredgewidth=0.1)
 
 pyplot.ylim(0,100)
 pyplot.xlabel('Date')
@@ -93,8 +103,7 @@ pyplot.title('Laptop Battery Charge')
 pyplot.grid(True)
 pyplot.figure(1).autofmt_xdate()
 
-pyplot.savefig("test.png", dpi=500)
-
+pyplot.savefig(outfile, dpi=500)
 
 
 exit(0)
