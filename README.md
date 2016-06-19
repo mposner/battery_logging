@@ -69,7 +69,7 @@ python analyze.py [logfile] [outfile]
 
 In this graph, the color of the markers represents the age of the data.  The oldest data is in green,
 and the newest data is in red.  We can see that, for the same charge level, the average runtime decreases
-as the age of the battery increases.
+as the age of the battery increases.  This data was taken over 1.5 years.
 
 
 ##See Also
