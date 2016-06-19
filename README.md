@@ -7,9 +7,12 @@ scheduled to run every few minutes for an extended period of
 time, it will build up data about your laptop battery charge and
 process usage for later analysis.
 
+
+#Data Collection
+
 ##Usage
 ```
-python batery.py [logfile]
+python battery.py [logfile]
 ```
 If no logfile is supplied, current battery info is printed to stdout.
 
@@ -53,7 +56,17 @@ http://msdn.microsoft.com/en-us/library/aa394323(v=vs.85).aspx
 Task scheduling on windows can be accomplished by using `Schedule Tasks` in the Control
 Panel, or by using `schtasks.exe` on the command line.
 
-##See Also
+
+
+#Data Analysis
+
+##Usage
+```
+python analyze.py [logfile] [outfile]
+```
+
+
+#See Also
 
 For working with more data from Windows, Tim Golden's [WMI Python package](https://pypi.python.org/pypi/WMI/) 
 may be more useful
