@@ -7,6 +7,7 @@ Windows Battery Status Analysis
 import sys
 import matplotlib.pyplot as pyplot
 from datetime import datetime
+from time import mktime
 
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
@@ -66,7 +67,7 @@ def parseLog(logfile):
     
     
     # print "DATES:\n"
-    # print result['dates']
+    # print [mktime(d.timetuple()) for d in result['dates']]
     # print "\nSTATUSES:\n"
     # print result['statuses']
     # print "\nCHARGES:\n"
@@ -101,7 +102,7 @@ for charge in result['charges']:
 f1 = pyplot.figure(1)
 
 for i in range(len(result['dates'])):
-    pyplot.plot_date(result['dates'][i], result['charges'][i], 'o', color=colors[i], markersize=4, markeredgewidth=0.1)
+    pyplot.plot_date(result['dates'][i], result['charges'][i], 'o', color=colors[i], markersize=3, markeredgewidth=0.1)
 
 pyplot.ylim(0,100)
 pyplot.xlabel('Date')
@@ -118,17 +119,34 @@ pyplot.close(f1)
 # Graph data: Charge vs. Runtime
 f2 = pyplot.figure(2)
 
+# create color data based on the sample date
+date_start = mktime(result['dates'][0].timetuple())
+date_end = mktime(result['dates'][-1].timetuple())
+
+
+#print "start: %d, end: %d, diff: %d" % (date_start, date_end, date_end - date_start)
+colors = []
+for date in result['dates']:
+    d = mktime(date.timetuple())
+    colors.append(( (d - date_start) / float(date_end-date_start), 
+                    1 - (d - date_start) / float(date_end-date_start), 0.3))
+
 # Remove outlier runtime data
 charges_cleaned = []
 runtimes_cleaned = []
+colors_cleaned = []
+
 for i in range(len(result['runtimes'])):
-    if result['runtimes'][i] < 1000000:
+    if result['runtimes'][i] < 24*60:
         charges_cleaned.append(result['charges'][i]) 
         runtimes_cleaned.append(result['runtimes'][i] / 60.0)  # convert runtimes to hours 
+        colors_cleaned.append(colors[i])
+        
+for i in range(len(charges_cleaned)):
+    pyplot.plot(charges_cleaned[i], runtimes_cleaned[i], 'o', color=colors_cleaned[i], 
+               markersize=3, markeredgewidth=0.1)
 
-pyplot.plot(charges_cleaned, runtimes_cleaned, 'o', markersize=4, markeredgewidth=0.1)
 
-#pyplot.ylim(0,200)
 pyplot.xlabel('Battery Charge [%]')
 pyplot.ylabel('Runtime [hr]')
 pyplot.title('Laptop - Windows 7 Estimated Runtime')

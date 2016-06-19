@@ -22,7 +22,7 @@ results are parsed and organized.
 The following fields are requested using the `Win32_Battery` class:
 - **BatteryStatus**: Information about whether the battery is charged, charging, discharging, etc.
 - **EstimatedChargeRemaining**: Estimated battery charge [%]
-- **EstimatedRunTime**: Estimated battery time remaining based on current usage [sec]
+- **EstimatedRunTime**: Estimated battery time remaining based on current usage [min]
 - **Status**: Health of the battery
 
 More information on the WMI `Win32_Battery` class can be found at:  
