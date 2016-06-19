@@ -1,5 +1,4 @@
-Windows Battery Logging
-=======================
+#Windows Battery Logging
 
 This script is designed to be run periodically and will gather 
 current data on your laptop battery and append it to a file.  If 
@@ -8,20 +7,20 @@ time, it will build up data about your laptop battery charge and
 process usage for later analysis.
 
 
-#Data Collection
+##Data Collection
 
-##Usage
+###Usage
 ```
 python battery.py [logfile]
 ```
 If no logfile is supplied, current battery info is printed to stdout.
 
-##Details
+###Details
 This script uses the Windows Management Instrumentation Command-line tool (WMIC) to 
 request system data from Windows.  Commands are issued as sub-processes and the 
 results are parsed and organized.
 
-####Battery
+#####Battery
 The following fields are requested using the `Win32_Battery` class:
 - **BatteryStatus**: Information about whether the battery is charged, charging, discharging, etc.
 - **EstimatedChargeRemaining**: Estimated battery charge [%]
@@ -31,7 +30,7 @@ The following fields are requested using the `Win32_Battery` class:
 More information on the WMI `Win32_Battery` class can be found at:  
 http://msdn.microsoft.com/en-us/library/aa394074(v=vs.85).aspx
 
-####Processes
+#####Processes
 The following fields are requested using the `Win32_PerfRawData_PerfProc_Process` class:
 - **Name**:  Name of each process
 - **PercentProcessorTime**:  Despite its name, this field is not the CPU usage of this process.
@@ -51,22 +50,22 @@ More information on the `Win32_PerfRawData_PerfProc_Process` class can be found 
 http://msdn.microsoft.com/en-us/library/aa394323(v=vs.85).aspx
 
 
-##Task Scheduling
+###Task Scheduling
 
 Task scheduling on windows can be accomplished by using `Schedule Tasks` in the Control
 Panel, or by using `schtasks.exe` on the command line.
 
 
 
-#Data Analysis
+##Data Analysis
 
-##Usage
+###Usage
 ```
 python analyze.py [logfile] [outfile]
 ```
 
 
-#See Also
+##See Also
 
 For working with more data from Windows, Tim Golden's [WMI Python package](https://pypi.python.org/pypi/WMI/) 
 may be more useful
