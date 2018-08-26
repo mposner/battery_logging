@@ -68,9 +68,12 @@ python analyze.py [logfile] [outfile]
 ![Charge v Runtime](https://github.com/mposner/battery_logging/blob/master/charge_v_runtime.png "Charge v Runtime")
 
 In this graph, the color of the markers represents the age of the data.  The oldest data is in green,
-and the newest data is in red.  We can see that, for the same charge level, the average runtime decreases
+and the newest data is in red.  We can see that, for the same charge level, the average remaining runtime decreases
 as the age of the battery increases.  This data was taken over 1.5 years.
 
+## Future Study
+- How does Windows' estimated remaining runtime compare to the actual time it takes to drain the battery?
+- Does the estimate's accuracy change as the battery ages ?
 
 ## See Also
 
